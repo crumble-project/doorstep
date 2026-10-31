@@ -1,0 +1,33 @@
+{
+  "name": "doorstep",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "bun src/bun/server.ts",
+    "build:binary": "bun build --compile src/bun/server.ts --outfile dist/doorstep",
+    "lint": "oxlint --deny-warnings",
+    "format": "bun fmt .",
+    "format:check": "bun fmt --check .",
+    "fix": "bun fmt . && oxlint --fix",
+    "check": "bun run lint && bun run format:check && tsc --noEmit && tsc --noEmit -p src/worker && bun test && vitest run --config vitest.workers.config.ts"
+  },
+  "dependencies": {
+    "@doorstep/protocol": "workspace:*",
+    "hono": "4.13.14",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.4.11",
+    "@cloudflare/workers-types": "5.20261030.1",
+    "@oxlint/plugins": "1.88.0",
+    "@types/bun": "1.4.4",
+    "oxlint": "1.88.0",
+    "oxlint-tsgolint": "7.0.2005",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5",
+    "wrangler": "4.156.0"
+  }
+}

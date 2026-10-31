@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "doorstep",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-08-15",
+  "durable_objects": {
+    "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Account"] }],
+  // Set to the origin webhook providers will call; ADMIN_TOKEN is a secret (`wrangler secret put ADMIN_TOKEN`).
+  "vars": { "PUBLIC_URL": "https://doorstep.example.com" },
+}
