@@ -50,10 +50,14 @@ export function storeContract(
       const store = await make();
       const now = new Date();
 
-      for (let i = 0; i < MAX_PENDING; i++) {
-        expect(await store.enqueue(event("s"), now)).not.toBe("full");
-      }
+      // Concurrent: 10k sequential Durable Object RPC round trips exceed the test timeout on CI.
+      const filled = await Promise.all(
+        Array.from({ length: MAX_PENDING }, () =>
+          store.enqueue(event("s"), now),
+        ),
+      );
 
+      expect(filled).not.toContain("full");
       expect(await store.enqueue(event("s"), now)).toBe("full");
     });
 
