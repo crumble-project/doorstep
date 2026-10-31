@@ -46,20 +46,17 @@ export function storeContract(
       expect((await store.pending()).map((e) => e.id)).toEqual(ids);
     });
 
+    // 10k sequential Durable Object RPCs take over 5s on CI runners.
     test('enqueue past MAX_PENDING returns "full"', async () => {
       const store = await make();
       const now = new Date();
 
-      // Concurrent: 10k sequential Durable Object RPC round trips exceed the test timeout on CI.
-      const filled = await Promise.all(
-        Array.from({ length: MAX_PENDING }, () =>
-          store.enqueue(event("s"), now),
-        ),
-      );
+      for (let i = 0; i < MAX_PENDING; i++) {
+        expect(await store.enqueue(event("s"), now)).not.toBe("full");
+      }
 
-      expect(filled).not.toContain("full");
       expect(await store.enqueue(event("s"), now)).toBe("full");
-    });
+    }, 30_000);
 
     test("expire drops events older than RETENTION_MS and keeps newer", async () => {
       const store = await make();
