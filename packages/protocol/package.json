@@ -1,10 +1,22 @@
 {
   "name": "@doorstep/protocol",
   "version": "0.1.0",
+  "description": "Message types of the Doorstep webhook relay's consumer WebSocket",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crumble-project/doorstep.git",
+    "directory": "packages/protocol"
+  },
+  "files": [
+    "src/index.ts"
+  ],
   "exports": {
     ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "zod": "4.6.7"
